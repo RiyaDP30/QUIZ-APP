@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuizPro - Online Assessment Platform</title>
+    <style>
+        :root {
+            --primary: #6C4AB6;
+            --primary-hover: #5A3A9E;
+            --secondary: #2D3436;
+            --success: #00A86B;
+            --danger: #DC3545;
+            --warning: #FDA50F;
+            --bg: #0F0F1A;
+            --card: #1A1A2E;
+            --card-hover: #222240;
+            --text: #E8E8F0;
+            --text-secondary: #9898B0;
+            --border: #2A2A3E;
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        .header {
+            background: #141428;
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            height: 64px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 800;
+            font-size: 20px;
+            letter-spacing: -1px;
+        }
+
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFFFFF;
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            color: var(--primary);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .timer-display {
+            background: var(--card);
+            padding: 8px 16px;
+            border-radius: 8px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 14px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .main-container {
+            max-width: 1260px;
+            margin: 0 auto;
+            padding: 28px 24px;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 28px;
+            min-height: calc(100vh - 64px);
+        }
+
+        .sidebar {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 92px;
+            border: 1px solid var(--border);
+        }
+
+        .sidebar-label {
+            color: var(--text-secondary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 18px;
+            padding: 0 12px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+            transition: var(--transition);
+            margin-bottom: 2px;
+        }
+
+        .nav-item:hover {
+            background: var(--card-hover);
+            color: var(--text);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: #FFFFFF;
+        }
+
+        .nav-indicator {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: currentColor;
+        }
+
+        .nav-badge {
+            background: #E84363;
+            color: white;
+            padding: 2px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .content {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 32px;
+            border: 1px solid var(--border);
+            min-height: 600px;
+        }
+
+        .page-title {
+            font-size: 26px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 6px;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+            font-size: 14px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+            margin-bottom: 32px;
+        }
+
+        .stat-card {
+            background: #141428;
+            border-radius: var(--radius);
+            padding: 22px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-value {
+            font-size: 36px;
+            font-weight: 700;
+            color: #FFFFFF;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-top: 8px;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .section-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #FFFFFF;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+        }
+
+        .card {
+            background: #141428;
+            border-radius: var(--radius);
+            padding: 22px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 74, 182, 0.15);
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        .tag {
+            padding: 3px 10px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .tag-java { background: rgba(253, 165, 15, 0.15); color: #FDA50F; }
+        .tag-python { background: rgba(54, 162, 235, 0.15); color: #36A2EB; }
+        .tag-easy { background: rgba(0, 168, 107, 0.15); color: #00A86B; }
+        .tag-medium { background: rgba(253, 165, 15, 0.15); color: #FDA50F; }
+        .tag-hard { background: rgba(220, 53, 69, 0.15); color: #DC3545; }
+
+        .card h3 {
+            color: #FFFFFF;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid var(--border);
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .btn {
+            padding: 10px 22px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-sm {
+            padding: 7px 16px;
+            font-size: 13px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 1.5px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--card-hover);
+            color: var(--text);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: #2A2A4E;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 500;
+            margin-bottom: 7px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 12px 16px;
+            background: #141428;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text);
+            font-size: 14px;
+            transition: var(--transition);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-input:focus, .form-select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(108, 74, 182, 0.1);
+        }
+
+        .form-select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%239898B0' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+        }
+
+        .quiz-progress {
+            background: #141428;
+            height: 5px;
+            border-radius: 3px;
+            margin-bottom: 28px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            background: var(--primary);
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.4s ease;
+        }
+
+        .quiz-counter {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 22px;
+            font-weight: 500;
+        }
+
+        .quiz-question {
+            font-size: 20px;
+            color: #FFFFFF;
+            font-weight: 600;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-item {
+            background: #141428;
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-secondary);
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .option-item:hover {
+            border-color: #4A4A6E;
+            background: #1C1C32;
+        }
+
+        .option-item.selected {
+            border-color: var(--primary);
+            background: rgba(108, 74, 182, 0.1);
+            color: #FFFFFF;
+        }
+
+        .option-indicator {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .option-item.selected .option-indicator {
+            background: var(--primary);
+            color: #FFFFFF;
+        }
+
+        .quiz-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 32px;
+            gap: 14px;
+        }
+
+        .browse-question {
+            background: #141428;
+            border-radius: var(--radius);
+            padding: 20px 24px;
+            margin-bottom: 14px;
+            border: 1px solid var(--border);
+        }
+
+        .browse-question .tags-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .browse-question h3 {
+            color: #FFFFFF;
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 14px;
+        }
+
+        .options-list-compact {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .option-compact {
+            padding: 8px 12px;
+            background: var(--card);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .answer-reveal {
+            margin-top: 12px;
+            font-size: 12px;
+            color: var(--success);
+            font-weight: 500;
+        }
+
+        .result-center {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score-ring {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #8B5CF6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 24px auto;
+        }
+
+        .score-number {
+            font-size: 52px;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1;
+        }
+
+        .score-divider {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+        }
+
+        .result-message {
+            font-size: 22px;
+            color: #FFFFFF;
+            font-weight: 600;
+            margin: 20px 0;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 28px 0;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .result-stat {
+            background: #141428;
+            padding: 18px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .result-stat-value {
+            font-size: 26px;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        .result-stat-label {
+            color: var(--text-secondary);
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 200;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal {
+            background: var(--card);
+            border-radius: 16px;
+            padding: 32px;
+            max-width: 440px;
+            width: 92%;
+            border: 1px solid var(--border);
+        }
+
+        .modal h2 {
+            color: #FFFFFF;
+            margin-bottom: 22px;
+            font-size: 20px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 6px;
+        }
+
+        .create-success {
+            background: rgba(0, 168, 107, 0.1);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid rgba(0, 168, 107, 0.3);
+            margin-top: 16px;
+        }
+
+        .create-success h3 {
+            color: var(--success);
+            margin-bottom: 8px;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+            .sidebar {
+                position: static;
+                display: flex;
+                overflow-x: auto;
+                gap: 8px;
+                padding: 14px;
+            }
+            .sidebar-label { display: none; }
+            .nav-item { white-space: nowrap; flex-shrink: 0; }
+            .stats-grid, .card-grid { grid-template-columns: 1fr; }
+            .options-list-compact { grid-template-columns: 1fr; }
+            .result-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header class="header">
+    <div class="logo">
+        <div class="logo-icon">Q</div>
+        <div class="logo-text">Quiz<span>Pro</span></div>
+    </div>
+    <div class="header-right">
+        <div class="timer-display hidden" id="timerBar">Time: <span id="timerDisplay">--:--</span></div>
+    </div>
+</header>
+
+<div class="main-container">
+
+    <aside class="sidebar">
+        <div class="sidebar-label">Menu</div>
+
+        <div class="nav-item active" onclick="navigate('home')">
+            <div class="nav-indicator"></div> Dashboard
+        </div>
+
+        <div class="nav-item" onclick="navigate('browse')">
+            <div class="nav-indicator"></div> Question Bank
+            <span class="nav-badge" id="questionCountBadge">0</span>
+        </div>
+
+        <div class="nav-item" onclick="navigate('create')">
+            <div class="nav-indicator"></div> Create Quiz
+        </div>
+
+        <div class="nav-item" onclick="openQuizModal()">
+            <div class="nav-indicator"></div> Start Exam
+        </div>
+    </aside>
+
+    <main class="content">
+
+        <div id="homePage">
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Overview of your quiz platform</p>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="totalQuestions">--</div>
+                    <div class="stat-label">Total Questions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="javaCount">--</div>
+                    <div class="stat-label">Java Questions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="pythonCount">--</div>
+                    <div class="stat-label">Python Questions</div>
+                </div>
+            </div>
+
+            <div class="section-header">
+                <h2>Quick Actions</h2>
+            </div>
+            <div class="btn-group" style="margin-bottom:28px;">
+                <button class="btn btn-primary" onclick="navigate('create')">Create New Quiz</button>
+                <button class="btn btn-outline" onclick="openQuizModal()">Take Assessment</button>
+                <button class="btn btn-secondary" onclick="navigate('browse')">View Questions</button>
+            </div>
+        </div>
+
+        <div id="browsePage" class="hidden">
+            <h1 class="page-title">Question Bank</h1>
+            <p class="page-subtitle">Browse and review all available questions</p>
+
+            <div class="btn-group" style="margin-bottom:24px;">
+                <button class="btn btn-primary btn-sm" onclick="loadBrowseQuestions('all')">All Categories</button>
+                <button class="btn btn-secondary btn-sm" onclick="loadBrowseQuestions('Java')">Java</button>
+                <button class="btn btn-secondary btn-sm" onclick="loadBrowseQuestions('Python')">Python</button>
+            </div>
+
+            <div id="browseContent">
+                <p style="color:var(--text-secondary); padding:40px; text-align:center;">Select a category to load questions</p>
+            </div>
+        </div>
+
+        <div id="createPage" class="hidden">
+            <h1 class="page-title">Create Quiz</h1>
+            <p class="page-subtitle">Configure your assessment parameters</p>
+
+            <div style="max-width:480px;">
+                <div class="form-group">
+                    <label class="form-label">Category</label>
+                    <select id="quizCategory" class="form-select">
+                        <option value="Java">Java</option>
+                        <option value="Python">Python</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Number of Questions</label>
+                    <input type="number" id="numQuestions" class="form-input" value="5" min="1" max="10">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Quiz Title</label>
+                    <input type="text" id="quizTitle" class="form-input" placeholder="e.g., Java Fundamentals Assessment">
+                </div>
+
+                <button class="btn btn-primary" onclick="createQuiz()" style="width:100%; justify-content:center;">
+                    Create Quiz
+                </button>
+
+                <div id="createMessage"></div>
+            </div>
+        </div>
+
+        <div id="quizPage" class="hidden">
+            <div class="quiz-progress">
+                <div class="quiz-progress-fill" id="progressFill" style="width:0%;"></div>
+            </div>
+            <div class="quiz-counter" id="questionCounter">Question 1 of 5</div>
+            <div class="quiz-question" id="questionText"></div>
+            <div class="options-list" id="optionsList"></div>
+            <div class="quiz-nav">
+                <button class="btn btn-secondary hidden" id="prevBtn" onclick="prevQuestion()">Previous</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">Next</button>
+                <button class="btn btn-success hidden" id="submitQuizBtn" onclick="submitQuiz()">Submit Assessment</button>
+            </div>
+        </div>
+
+        <div id="resultPage" class="hidden">
+            <div class="result-center">
+                <h1 class="page-title">Assessment Complete</h1>
+                <div class="score-ring">
+                    <div class="score-number" id="finalScore">0</div>
+                    <div class="score-divider" id="finalTotal">/5</div>
+                </div>
+                <div class="result-message" id="resultMessage"></div>
+                <div class="result-grid">
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="correctAnswers">0</div>
+                        <div class="result-stat-label">Correct</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="wrongAnswers">0</div>
+                        <div class="result-stat-label">Incorrect</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-value" id="percentage">0%</div>
+                        <div class="result-stat-label">Percentage</div>
+                    </div>
+                </div>
+                <div class="btn-group" style="justify-content:center; margin-top:12px;">
+                    <button class="btn btn-primary" onclick="navigate('home')">Return to Dashboard</button>
+                    <button class="btn btn-outline" onclick="openQuizModal()">New Assessment</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+</div>
+
+<div class="modal-overlay hidden" id="quizModal">
+    <div class="modal">
+        <h2>Start Assessment</h2>
+        <div class="form-group">
+            <label class="form-label">Enter Quiz ID</label>
+            <input type="number" id="modalQuizId" class="form-input" value="1" min="1" placeholder="Quiz ID">
+        </div>
+        <div class="modal-actions">
+            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+            <button class="btn btn-primary" onclick="loadQuizById()">Begin Exam</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentPage = 'home';
+    let quizQuestions = [];
+    let currentQuestionIndex = 0;
+    let userAnswers = {};
+    let currentQuizId = null;
+
+    function navigate(page) {
+        document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+        const pages = ['home', 'browse', 'create'];
+        pages.forEach(p => document.getElementById(p + 'Page').classList.add('hidden'));
+        document.getElementById('quizPage').classList.add('hidden');
+        document.getElementById('resultPage').classList.add('hidden');
+        document.getElementById('timerBar').classList.add('hidden');
+
+        document.getElementById(page + 'Page').classList.remove('hidden');
+        currentPage = page;
+
+        const navItems = document.querySelectorAll('.nav-item');
+        const navMap = { home: 0, browse: 1, create: 2 };
+        if (navMap[page] !== undefined) navItems[navMap[page]].classList.add('active');
+
+        if (page === 'home') loadDashboardData();
+    }
+
+    async function loadDashboardData() {
+        try {
+            const response = await fetch('/question/allQuestions');
+            const questions = await response.json();
+
+            document.getElementById('totalQuestions').textContent = questions.length;
+            document.getElementById('javaCount').textContent = questions.filter(q => q.category === 'Java').length;
+            document.getElementById('pythonCount').textContent = questions.filter(q => q.category === 'Python').length;
+            document.getElementById('questionCountBadge').textContent = questions.length;
+        } catch (error) {
+            console.error('Error loading data:', error);
+        }
+    }
+
+    async function loadBrowseQuestions(category) {
+        const container = document.getElementById('browseContent');
+        container.innerHTML = '<p style="color:var(--text-secondary); padding:40px; text-align:center;">Loading questions...</p>';
+
+        try {
+            let url = category === 'all' ? '/question/allQuestions' : '/question/category/' + category;
+            const response = await fetch(url);
+            const questions = await response.json();
+
+            if (questions.length === 0) {
+                container.innerHTML = '<p style="color:var(--text-secondary); padding:40px; text-align:center;">No questions found for this category.</p>';
+                return;
+            }
+
+            let html = '<p style="color:var(--text-secondary); margin-bottom:18px; font-size:13px;">Showing ' + questions.length + ' questions</p>';
+
+            questions.forEach(q => {
+                html += '<div class="browse-question">' +
+                    '<div class="tags-row">' +
+                    '<span class="tag tag-' + q.category.toLowerCase() + '">' + q.category + '</span>' +
+                    '<span class="tag tag-' + q.difficultyLevel.toLowerCase() + '">' + q.difficultyLevel + '</span>' +
+                    '</div>' +
+                    '<h3>Q' + q.id + ': ' + q.questionTitle + '</h3>' +
+                    '<div class="options-list-compact">' +
+                    '<div class="option-compact">A) ' + q.option1 + '</div>' +
+                    '<div class="option-compact">B) ' + q.option2 + '</div>' +
+                    '<div class="option-compact">C) ' + q.option3 + '</div>' +
+                    '<div class="option-compact">D) ' + q.option4 + '</div>' +
+                    '</div>' +
+                    '<div class="answer-reveal">Correct Answer: ' + q.rightAnswer + '</div>' +
+                    '</div>';
+            });
+
+            container.innerHTML = html;
+        } catch (error) {
+            container.innerHTML = '<p style="color:var(--danger);">Error loading questions. Please try again.</p>';
+        }
+    }
+
+    async function createQuiz() {
+        const category = document.getElementById('quizCategory').value;
+        const numQ = document.getElementById('numQuestions').value;
+        const title = document.getElementById('quizTitle').value || category + ' Assessment';
+        const msgDiv = document.getElementById('createMessage');
+
+        msgDiv.innerHTML = '<p style="color:var(--text-secondary); padding:12px 0;">Creating quiz...</p>';
+
+        try {
+            const response = await fetch('/quiz/create?category=' + category + '&numQ=' + numQ + '&title=' + encodeURIComponent(title), {
+                method: 'POST'
+            });
+
+            if (response.ok) {
+                msgDiv.innerHTML = '<div class="create-success">' +
+                    '<h3>Quiz Created Successfully</h3>' +
+                    '<p style="color:var(--text-secondary);">Category: ' + category + ' | Questions: ' + numQ + '</p>' +
+                    '<p style="color:var(--text-secondary);">Title: ' + title + '</p>' +
+                    '<button class="btn btn-primary btn-sm" onclick="openQuizModal()" style="margin-top:14px;">Take Quiz Now</button>' +
+                    '</div>';
+            }
+        } catch (error) {
+            msgDiv.innerHTML = '<p style="color:var(--danger); padding:12px 0;">Error creating quiz. Check server connection.</p>';
+        }
+    }
+
+    function openQuizModal() {
+        document.getElementById('quizModal').classList.remove('hidden');
+        document.getElementById('modalQuizId').focus();
+    }
+
+    function closeModal() {
+        document.getElementById('quizModal').classList.add('hidden');
+    }
+
+    async function loadQuizById() {
+        const quizId = document.getElementById('modalQuizId').value;
+        closeModal();
+
+        try {
+            const response = await fetch('/quiz/get/' + quizId);
+            if (!response.ok) {
+                alert('Quiz not found. Please create a quiz first.');
+                return;
+            }
+
+            quizQuestions = await response.json();
+            currentQuizId = quizId;
+            currentQuestionIndex = 0;
+            userAnswers = {};
+
+            document.getElementById('homePage').classList.add('hidden');
+            document.getElementById('browsePage').classList.add('hidden');
+            document.getElementById('createPage').classList.add('hidden');
+            document.getElementById('resultPage').classList.add('hidden');
+            document.getElementById('quizPage').classList.remove('hidden');
+            document.getElementById('timerBar').classList.remove('hidden');
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+
+            showQuestion();
+        } catch (error) {
+            alert('Error loading quiz. Check server connection.');
+        }
+    }
+
+    function showQuestion() {
+        const q = quizQuestions[currentQuestionIndex];
+        const total = quizQuestions.length;
+
+        document.getElementById('progressFill').style.width = ((currentQuestionIndex + 1) / total * 100) + '%';
+        document.getElementById('questionCounter').textContent = 'Question ' + (currentQuestionIndex + 1) + ' of ' + total;
+        document.getElementById('questionText').textContent = q.questionTitle;
+
+        const options = [q.option1, q.option2, q.option3, q.option4];
+        const letters = ['A', 'B', 'C', 'D'];
+
+        let html = '';
+        options.forEach((opt, i) => {
+            const selected = userAnswers[q.id] === opt;
+            html += '<div class="option-item ' + (selected ? 'selected' : '') + '" onclick="selectOption(' + q.id + ', \'' + opt.replace(/'/g, "\\'") + '\', this)">' +
+                '<div class="option-indicator">' + letters[i] + '</div>' +
+                opt +
+                '</div>';
+        });
+
+        document.getElementById('optionsList').innerHTML = html;
+
+        document.getElementById('prevBtn').classList.toggle('hidden', currentQuestionIndex === 0);
+
+        if (currentQuestionIndex === total - 1) {
+            document.getElementById('nextBtn').classList.add('hidden');
+            document.getElementById('submitQuizBtn').classList.remove('hidden');
+        } else {
+            document.getElementById('nextBtn').classList.remove('hidden');
+            document.getElementById('submitQuizBtn').classList.add('hidden');
+        }
+    }
+
+    function selectOption(questionId, answer, element) {
+        userAnswers[questionId] = answer;
+        document.querySelectorAll('.option-item').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+    }
+
+    function nextQuestion() {
+        if (currentQuestionIndex < quizQuestions.length - 1) {
+            currentQuestionIndex++;
+            showQuestion();
+        }
+    }
+
+    function prevQuestion() {
+        if (currentQuestionIndex > 0) {
+            currentQuestionIndex--;
+            showQuestion();
+        }
+    }
+
+    async function submitQuiz() {
+        const unanswered = quizQuestions.length - Object.keys(userAnswers).length;
+        if (unanswered > 0) {
+            if (!confirm(unanswered + ' question(s) unanswered. Submit anyway?')) return;
+        }
+
+        const responses = quizQuestions.map(q => ({
+            id: q.id,
+            response: userAnswers[q.id] || ''
+        }));
+
+        try {
+            const response = await fetch('/quiz/submit/' + currentQuizId, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(responses)
+            });
+
+            const score = await response.json();
+            const total = quizQuestions.length;
+            const pct = Math.round((score / total) * 100);
+
+            document.getElementById('quizPage').classList.add('hidden');
+            document.getElementById('resultPage').classList.remove('hidden');
+            document.getElementById('timerBar').classList.add('hidden');
+
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalTotal').textContent = '/' + total;
+            document.getElementById('correctAnswers').textContent = score;
+            document.getElementById('wrongAnswers').textContent = total - score;
+            document.getElementById('percentage').textContent = pct + '%';
+
+            let msg;
+            if (pct >= 80) msg = 'Excellent performance!';
+            else if (pct >= 60) msg = 'Good job!';
+            else if (pct >= 40) msg = 'Keep practicing.';
+            else msg = 'More preparation needed.';
+            document.getElementById('resultMessage').textContent = msg;
+
+        } catch (error) {
+            alert('Error submitting assessment. Please try again.');
+        }
+    }
+
+    window.onload = function() {
+        loadDashboardData();
+    };
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeModal();
+    });
+
+    document.getElementById('quizModal').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+</script>
+</body>
+</html>
