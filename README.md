@@ -1,4 +1,3 @@
-# QUIZ-APP
 # QuizPro - Online Assessment Platform
 
 A full-stack web application for automated quiz creation, 
